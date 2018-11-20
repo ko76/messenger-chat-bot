@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 import json
 import requests
 import datetime
@@ -15,6 +15,17 @@ psid = 1212
 def hello():
     return jsonify({"key": 1234, "typed": " 12734901"})
 
+# env_variables
+# token to verify that this bot is legit
+verify_token = "purduechatbot"
+# token to send messages through facebook messenger
+access_token = ""
+
+@app.route('/webhook', methods=['GET'])
+def webhook_verify():
+    if request.args.get('hub.verify_token') == verify_token:
+        return request.args.get('hub.challenge')
+    return "Wrong verify token"
 
 @app.route("/webhook", methods=["POST"])
 def get():
@@ -51,3 +62,6 @@ def getLoc(message):
                 return strn
         return "none"
     return "none"
+
+if __name__=='main':
+    app.run(debug=True, host = '0.0.0.0')
