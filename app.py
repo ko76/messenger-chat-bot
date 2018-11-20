@@ -76,6 +76,7 @@ if __name__=='main':
 import random
 from flask import Flask, request
 from pymessenger.bot import Bot
+import os
 
 app = Flask(__name__)
 ACCESS_TOKEN = getenv("ACCESS_TOKEN")
