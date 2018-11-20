@@ -73,51 +73,62 @@ def getLoc(message):
 
 if __name__=='main':
     app.run(debug=True, host = '0.0.0.0')"""
-from flask import Flask, request, Response
-import requests, json, random, os
+import random
+from flask import Flask, request
+from pymessenger.bot import Bot
+
 app = Flask(__name__)
+ACCESS_TOKEN = getenv("ACCESS_TOKEN")
+VERIFY_TOKEN = getenv('VERIFY_TOKEN')
+bot = Bot(ACCESS_TOKEN)
 
-# env_variables
-# token to verify that this bot is legit
-verify_token = os.getenv('VERIFY_TOKEN', None)
-# token to send messages through facebook messenger
-access_token = os.getenv('ACCESS_TOKEN', None)
+#We will receive messages that Facebook sends our bot at this endpoint 
+@app.route("/", methods=['GET', 'POST'])
+def receive_message():
+    if request.method == 'GET':
+        """Before allowing people to message your bot, Facebook has implemented a verify token
+        that confirms all requests that your bot receives came from Facebook.""" 
+        token_sent = request.args.get("hub.verify_token")
+        return verify_fb_token(token_sent)
+    #if the request was not get, it must be POST and we can just proceed with sending a message back to user
+    else:
+        # get whatever message a user sent the bot
+       output = request.get_json()
+       for event in output['entry']:
+          messaging = event['messaging']
+          for message in messaging:
+            if message.get('message'):
+                #Facebook Messenger ID for user so we know where to send response back to
+                recipient_id = message['sender']['id']
+                if message['message'].get('text'):
+                    response_sent_text = get_message()
+                    send_message(recipient_id, response_sent_text)
+                #if user sends us a GIF, photo,video, or any other non-text item
+                if message['message'].get('attachments'):
+                    response_sent_nontext = get_message()
+                    send_message(recipient_id, response_sent_nontext)
+    return "Message Processed"
 
-@app.route('/webhook', methods=['GET'])
-def webhook_verify():
-    if request.args.get('hub.verify_token') == verify_token:
-        return request.args.get('hub.challenge')
-    return "Wrong verify token"
 
-@app.route('/webhook', methods=['POST'])
-def webhook_action():
-    data = json.loads(request.data.decode('utf-8'))
-    for entry in data['entry']:
-        user_message = entry['messaging'][0]['message']['text']
-        user_id = entry['messaging'][0]['sender']['id']
-        response = {
-            'messaging_type': 'MESSAGE_TAG',
-            'recipient': {'id': user_id},
-            'message': {}
-        }
-        response['message']['text'] = handle_message(user_id, user_message)
-        r = requests.post(
-            'https://graph.facebook.com/v2.6/me/messages/?access_token=' + access_token, json=response)
-    return Response(response="EVENT RECEIVED",status=200)
+def verify_fb_token(token_sent):
+    #take token sent by facebook and verify it matches the verify token you sent
+    #if they match, allow the request, else return an error 
+    if token_sent == VERIFY_TOKEN:
+        return request.args.get("hub.challenge")
+    return 'Invalid verification token'
 
 
-def handle_message(user_id, user_message):
-    # DO SOMETHING with the user_message ... ¯\_(ツ)_/¯
-    return "Hello "+user_id+" ! You just sent me : " + user_message
+#chooses a random message to send to the user
+def get_message():
+    sample_responses = ["You are stunning!", "We're proud of you.", "Keep on being you!", "We're greatful to know you :)"]
+    # return selected item to the user
+    return random.choice(sample_responses)
 
-@app.route('/privacy', methods=['GET'])
-def privacy():
-    # needed route if you need to make your bot public
-    return "This facebook messenger bot's only purpose is to [...]. That's all. We don't use it in any other way."
+#uses PyMessenger to send response to user
+def send_message(recipient_id, response):
+    #sends user the text message provided via input response parameter
+    bot.send_text_message(recipient_id, response)
+    return "success"
 
-@app.route('/', methods=['GET'])
-def index():
-    return "Hello there, I'm a facebook messenger bot."
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(debug=True)
