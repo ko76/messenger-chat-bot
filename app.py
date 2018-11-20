@@ -48,7 +48,7 @@ def get():
             else:
                 retmes += loc + ' '
             send = sendMes(retmes,user_id)
-            requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=' + access_token, json=send)
+            requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=' + access_token, data=send)
     return Response(response="EVENT RECEIVED",status=200)
 
 @app.route("/webhook_dev", methods=["POST"])

@@ -1,3 +1,5 @@
 __pycache__
 .vscode
 chatbot
+*.pyc
+settoken.sh

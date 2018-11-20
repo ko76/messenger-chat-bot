@@ -4,14 +4,14 @@ import json
 
 
 r = requests.post(
-    "http://localhost:5000/webhook",
+    "https://purduediningchatbot.herokuapp.com/webhook_dev",
     data=json.dumps(
         {
             "object": "page",
             "entry": [
                 {
-                    "sender": {"id": "<PSID>"},
-                    "recipient": {"id": "<PAGE_ID>"},
+                    "sender": {"id": "0000"},
+                    "recipient": {"id": ""},
                     "timestamp": 1458692752478,
                     "message": {
                         "mid": "mid.1457764197618:41d102a3e1ae206a38",
@@ -20,7 +20,7 @@ r = requests.post(
                     },
                 },
                 {
-                    "sender": {"id": "<PSID>"},
+                    "sender": {"id": "0000"},
                     "recipient": {"id": "<PAGE_ID>"},
                     "timestamp": 1458692752478,
                     "message": {
