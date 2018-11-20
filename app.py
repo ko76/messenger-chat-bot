@@ -41,7 +41,7 @@ def get():
             mes = entry["message"]["text"]
             loc = getLoc(mes)
             if loc == "all":
-                for l in locations
+                for l in locations:
                     retmes += l + " "
             elif loc == "none":
                 retmes += "none"
