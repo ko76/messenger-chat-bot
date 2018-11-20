@@ -53,7 +53,7 @@ def get():
 
 
 def sendMes(message,userid):
-    return json.loads({"recipient": {"id": userid},"message": {"text": message}})
+    return json.dumps({"recipient": {"id": userid},"message": {"text": message}})
 
 def getLoc(message):
     split_string = message.split(" ")
