@@ -51,30 +51,9 @@ def get():
             requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=' + access_token, data=send)
     return Response(response="EVENT RECEIVED",status=200)
 
-@app.route("/webhook_dev", methods=["POST"])
-def getdev():
-    content = request.data
-    data = json.loads(content)
-    entries = data["entry"]
-    retmes = ""
-    if data["object"] == "page":
-        for entry in entries:
-            user_id = entry['messaging'][0]['sender']['id']
-            mes = entry["message"]["text"]
-            loc = getLoc(mes)
-            if loc == "all":
-                for l in locations:
-                    retmes += l + " "
-            elif loc == "none":
-                retmes += "none"
-            else:
-                retmes += loc + ' '
-            send = sendMes(retmes,user_id)
-            
-    return send
 
 def sendMes(message,userid):
-    return json.dumps({"recipient": {"id": userid},"message": {"text": message}},)
+    return json.loads({"recipient": {"id": userid},"message": {"text": message}},)
 
 def getLoc(message):
     split_string = message.split(" ")

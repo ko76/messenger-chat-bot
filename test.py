@@ -4,7 +4,7 @@ import json
 
 
 r = requests.post(
-    "https://purduediningchatbot.herokuapp.com/webhook_dev",
+    "https://purduediningchatbot.herokuapp.com/webhook",
     data=json.dumps(
         {
             "object": "page",
