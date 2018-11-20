@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, Response
 import json
+import os
 import requests
 import datetime
 import xml.etree.ElementTree as ET
@@ -10,6 +11,7 @@ info = ["Meal", "Hours"]
 tempt = datetime.datetime.now()
 time = tempt.strftime("%m-%d-%Y")
 psid = 1212
+access_token = os.getenv("ACCESS_TOKEN")
 
 @app.route("/")
 def hello():
@@ -17,9 +19,9 @@ def hello():
 
 # env_variables
 # token to verify that this bot is legit
-verify_token = "purduechatbot"
+verify_token = os.getenv("VERIFY_TOKEN")
 # token to send messages through facebook messenger
-access_token = ""
+
 
 @app.route('/webhook', methods=['GET'])
 def webhook_verify():
