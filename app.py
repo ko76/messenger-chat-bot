@@ -51,12 +51,12 @@ def get():
             else:
                 retmes += loc + ' '
             send = sendMes(retmes,user_id)
-            requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=' + access_token, data=send)
+            requests.post('https://graph.facebook.com/v2.6/me/messages?access_token=' + access_token, json=send)
     return Response(response="EVENT RECEIVED",status=200)
 
 
 def sendMes(message,userid):
-    return json.dumps({"recipient": {"id": userid},"message": {"text": message}})
+    return {"recipient": {"id": userid},"message": {"text": message}}
 
 def getLoc(message):
     split_string = message.split(" ")
