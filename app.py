@@ -105,21 +105,6 @@ def webhook_action():
             'https://graph.facebook.com/v2.6/me/messages/?access_token=' + access_token, json=response)
     return Response(response="EVENT RECEIVED",status=200)
 
-@app.route('/webhook_dev', methods=['POST'])
-def webhook_dev():
-    # custom route for local development
-    data = json.loads(request.data.decode('utf-8'))
-    user_message = data['entry'][0]['messaging'][0]['message']['text']
-    user_id = data['entry'][0]['messaging'][0]['sender']['id']
-    response = {
-        'recipient': {'id': user_id},
-        'message': {'text': handle_message(user_id, user_message)}
-    }
-    return Response(
-        response=json.dumps(response),
-        status=200,
-        mimetype='application/json'
-    )
 
 def handle_message(user_id, user_message):
     # DO SOMETHING with the user_message ... ¯\_(ツ)_/¯
