@@ -1,10 +1,12 @@
 import requests
 import json
 
-
+web1 = "https://purduediningchatbot.herokuapp.com/webhook"
+web2 = "http://127.0.0.1:5000/webhook"
+web3 = "http://127.0.0.1:8000/webhook"
 
 r = requests.post(
-    "https://purduediningchatbot.herokuapp.com/webhook",
+    web3,
     data=json.dumps(
         {
             "object": "page",

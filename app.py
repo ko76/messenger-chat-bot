@@ -32,6 +32,8 @@ def webhook_verify():
 @app.route("/webhook", methods=["POST"])
 def get():
     content = request.data
+    f = open("temp.txt","a")
+    f.write(content)
     data = json.loads(content)
     entries = data["entry"]
     retmes = ""
