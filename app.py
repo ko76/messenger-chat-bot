@@ -96,6 +96,7 @@ def webhook_action():
         user_message = entry['messaging'][0]['message']['text']
         user_id = entry['messaging'][0]['sender']['id']
         response = {
+            'messaging_type': 'MESSAGE_TAG',
             'recipient': {'id': user_id},
             'message': {}
         }
