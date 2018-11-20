@@ -37,9 +37,9 @@ def get():
     retmes = ""
     if data["object"] == "page":
         for entry in entries:
+            user_mes = entry['messaging'][0]['message']['text']
             user_id = entry['messaging'][0]['sender']['id']
-            mes = entry["message"]["text"]
-            loc = getLoc(mes)
+            loc = getLoc(user_mes)
             if loc == "all":
                 for l in locations:
                     retmes += l + " "
@@ -53,7 +53,7 @@ def get():
 
 
 def sendMes(message,userid):
-    return json.loads({"recipient": {"id": userid},"message": {"text": message}},)
+    return json.loads({"recipient": {"id": userid},"message": {"text": message}})
 
 def getLoc(message):
     split_string = message.split(" ")
