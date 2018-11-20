@@ -9,29 +9,29 @@ r = requests.post(
     web3,
     data=json.dumps(
         {
-            "object": "page",
-            "entry": [
+            "object":"page",
+            "entry":[
                 {
-                    "sender": {"id": "0000"},
-                    "recipient": {"id": ""},
-                    "timestamp": 1458692752478,
-                    "message": {
-                        "mid": "mid.1457764197618:41d102a3e1ae206a38",
-                        "text": "list all dining halls",
-                        "quick_reply": {"payload": "<DEVELOPER_DEFINED_PAYLOAD>"},
-                    },
-                },
-                {
-                    "sender": {"id": "0000"},
-                    "recipient": {"id": "<PAGE_ID>"},
-                    "timestamp": 1458692752478,
-                    "message": {
-                        "mid": "mid.1457764197618:41d102a3e1ae206a38",
-                        "text": "list Wiley meals today",
-                        "quick_reply": {"payload": "<DEVELOPER_DEFINED_PAYLOAD>"},
-                    },
-                },
-            ],
+                    "messaging":[
+                        {
+                            "message":{
+                                "text":"list all dining halls",
+                                "seq":20,
+                                "mid":"mid.1466015596912:7348aba4de4cfddf91"
+                            },
+                            "timestamp":1466015596919,
+                            "sender":{
+                                "id":"885721401551027"
+                            },
+                            "recipient":{
+                                "id":"260317677677806"
+                            }
+                        }
+                    ],
+                    "time":1466015596947,
+                    "id":"260317677677806"
+                }
+            ]
         }
     )
 )

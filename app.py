@@ -33,8 +33,9 @@ def webhook_verify():
 def get():
     content = request.data
     f = open("temp.txt","a")
-    f.write(content)
     data = json.loads(content)
+    f.write(json.dumps(data))
+    f.close()
     entries = data["entry"]
     retmes = ""
     if data["object"] == "page":
